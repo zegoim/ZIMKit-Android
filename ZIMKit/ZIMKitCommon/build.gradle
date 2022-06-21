@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -26,7 +27,30 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'im.zego.zimkit'
+                artifactId = 'common'
+                version = 'mvp'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
 
+                groupId = 'im.zego.zimkit'
+                artifactId = 'common-debug'
+                version = 'mvp'
+            }
+        }
+    }
+}
 dependencies {
     api "io.github.scwang90:refresh-layout-kernel:${rootProject.ext.rv_thirdVersion}"
     api "io.github.scwang90:refresh-footer-classics:${rootProject.ext.rv_thirdVersion}"

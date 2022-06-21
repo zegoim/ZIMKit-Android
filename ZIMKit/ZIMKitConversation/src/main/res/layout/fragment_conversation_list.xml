@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="im.zego.zimkitconversation.viewmodel.ZIMKitConversationVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_message_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/conversation_empty"
+            android:textColor="@color/color_a4a4a4"
+            android:textSize="14sp"
+            android:visibility="@{vm.isListEmpty?view.VISIBLE:view.GONE}" />
+
+        <Button
+            android:id="@+id/btn_reload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginBottom="105dp"
+            android:background="@drawable/shape_radius_12_bg_ff3478fc"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/conversation_reload"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="@{vm.isLoadFirstFail?view.VISIBLE:view.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/view_bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{vm.isListEmpty?view.GONE:view.VISIBLE}" />
+
+            <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@drawable/layer_list_1px_e6e6e6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/refresh_layout" />
+
+        <ImageView
+            android:id="@+id/img_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_message_total_count"
+            app:layout_constraintBottom_toTopOf="@id/tv_message_unread"
+            app:layout_constraintLeft_toLeftOf="@id/view_bottom"
+            app:layout_constraintRight_toRightOf="@id/view_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+
+        <TextView
+            android:id="@+id/tv_message_unread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/conversation_message_total_count"
+            android:textColor="@color/color_666666"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/img_message"
+            app:layout_constraintRight_toRightOf="@id/img_message"
+            app:layout_constraintTop_toBottomOf="@id/img_message" />
+
+        <im.zego.zimkitcommon.components.widget.UnreadCountView
+            android:id="@+id/tv_un_read_count"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="-4dp"
+            android:layout_marginRight="-6dp"
+            app:layout_constraintRight_toRightOf="@id/img_message"
+            app:layout_constraintTop_toTopOf="@id/img_message"
+            app:unReadCount="@{vm.totalUnReadCount}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

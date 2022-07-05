@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,16 +17,16 @@ import im.zego.zimkitmessages.R;
 
 public class ZIMKitMessageTimeLineDecoration extends RecyclerView.ItemDecoration {
     private final DecorationCallback mCallBack;
-    private TextPaint mTextPaint;
-    private float topGap;
-    private int paddingTop;
+    private final TextPaint mTextPaint;
+    private final float topGap;
+    private final int paddingBottom;
 
     public ZIMKitMessageTimeLineDecoration(Context context, DecorationCallback decorationCallback) {
         mCallBack = decorationCallback;
         Resources res = context.getResources();
         mTextPaint = new TextPaint();
         mTextPaint.setAntiAlias(true);
-        mTextPaint.setTextSize(30);
+        mTextPaint.setTextSize(getSPSize(context, 12));
         mTextPaint.setColor(res.getColor(im.zego.zimkitcommon.R.color.color_b8b8b8));
         mTextPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -33,8 +34,9 @@ public class ZIMKitMessageTimeLineDecoration extends RecyclerView.ItemDecoration
         mTextPaint.getTextBounds(res.getString(R.string.message_test_time), 0, res.getString(R.string.message_test_time).length(), rect);
         int h = rect.height();
 
-        paddingTop = res.getDimensionPixelSize(R.dimen.message_time_decoration_top_padding);
-        topGap = h + res.getDimensionPixelSize(R.dimen.message_time_decoration_bottom_padding) + paddingTop;// measure height
+        int paddingTop = res.getDimensionPixelSize(R.dimen.message_time_decoration_top_padding);
+        paddingBottom = res.getDimensionPixelSize(R.dimen.message_time_decoration_bottom_padding);
+        topGap = h + paddingBottom + paddingTop;// measure height
     }
 
     @Override
@@ -50,10 +52,8 @@ public class ZIMKitMessageTimeLineDecoration extends RecyclerView.ItemDecoration
             if (needAddTimeLine) {
                 String time = mCallBack.getTimeLine(position);
                 if (TextUtils.isEmpty(time)) return;
-                float top = view.getTop() - topGap;
-                float bottom = view.getTop();
-                float yPos = (((bottom - top) / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2)) + top;
-                c.drawText(time, (left + right) >> 1, yPos, mTextPaint);//绘制文本
+                float top = view.getTop() - paddingBottom;
+                c.drawText(time, (left + right) >> 1, top, mTextPaint);//绘制文本
             }
         }
     }
@@ -68,6 +68,13 @@ public class ZIMKitMessageTimeLineDecoration extends RecyclerView.ItemDecoration
         } else {
             outRect.top = 0;
         }
+    }
+
+    /**
+     * 将px值转换为sp值，保证文字大小不变
+     */
+    public static float getSPSize(Context context, float size) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, context.getResources().getDisplayMetrics());
     }
 
     public interface DecorationCallback {

@@ -14,12 +14,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMErrorUserInfo;
 import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.enums.ZIMErrorCode;
 import im.zego.zimkitcommon.ZIMKitConstant;
 import im.zego.zimkitcommon.ZIMKitManager;
 import im.zego.zimkitgroup.R;
+
 import android.app.Application;
 
 public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
@@ -87,22 +89,14 @@ public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
         };
     }
 
-    private void createSingleChat() {
-        Bundle bundle = new Bundle();
-        bundle.putString(ZIMKitConstant.GroupPageConstant.KEY_TITLE, mId.get());
-        bundle.putString(ZIMKitConstant.GroupPageConstant.KEY_ID, mId.get());
-        toChat(ZIMErrorCode.SUCCESS, bundle);
-    }
-
-    private void createGroupChat() {
-        String idText = mId.get();
-        if (idText == null || idText.isEmpty()) {
+    public void createGroupChat(List<String> ids, String groupName) {
+        if (ids == null || ids.isEmpty()) {
+            toChat(ZIMErrorCode.PARAM_INVALID, "id is null or empty ");
             return;
         }
         ZIMGroupInfo groupInfo = new ZIMGroupInfo();
-        groupInfo.groupName = mSecondText.get();
-        List<String> strings = Arrays.asList(idText.split(";"));
-        ZIMKitManager.share().zim().createGroup(groupInfo, strings, (groupInfo1, userList, errorUserList, errorInfo) -> {
+        groupInfo.groupName = groupName;
+        ZIMKitManager.share().zim().createGroup(groupInfo, ids, (groupInfo1, userList, errorUserList, errorInfo) -> {
             if (errorInfo.code == ZIMErrorCode.SUCCESS) {
                 if (!errorUserList.isEmpty()) {
                     StringBuilder errorUserStr = new StringBuilder();
@@ -127,8 +121,8 @@ public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
         });
     }
 
-    private void joinGroupChat() {
-        ZIMKitManager.share().zim().joinGroup(mId.get(), (groupInfo, errorInfo) -> {
+    public void joinGroupChat(String groupId) {
+        ZIMKitManager.share().zim().joinGroup(groupId, (groupInfo, errorInfo) -> {
             if (errorInfo.code == ZIMErrorCode.SUCCESS) {
                 Bundle bundle = new Bundle();
                 bundle.putString(ZIMKitConstant.GroupPageConstant.KEY_TITLE, groupInfo.baseInfo.groupName);
@@ -136,7 +130,7 @@ public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
                 toChat(errorInfo.code, bundle);
             } else {
                 if (errorInfo.code == ZIMErrorCode.DOES_NOT_EXIST) {
-                    errorInfo.message = getApplication().getString(R.string.group_group_id_not_exit, mId.get());
+                    errorInfo.message = getApplication().getString(R.string.group_group_id_not_exit, groupId);
                 }
                 toChat(errorInfo.code, errorInfo.message);
             }
@@ -150,10 +144,16 @@ public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
     public void startChat() {
         switch (mType) {
             case ZIMKitConstant.GroupPageConstant.TYPE_CREATE_GROUP_MESSAGE:
-                createGroupChat();
+                String idText = mId.get();
+                if (idText == null || idText.isEmpty()) {
+                    return;
+                }
+                List<String> strings = Arrays.asList(idText.split(";"));
+                createGroupChat(strings, mSecondText.get());
                 break;
             case ZIMKitConstant.GroupPageConstant.TYPE_JOIN_GROUP_MESSAGE:
-                joinGroupChat();
+                String groupId = mId.get();
+                joinGroupChat(groupId);
                 break;
         }
     }

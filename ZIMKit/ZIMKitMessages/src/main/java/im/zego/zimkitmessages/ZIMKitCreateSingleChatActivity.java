@@ -25,7 +25,7 @@ public class ZIMKitCreateSingleChatActivity extends BaseActivity<ActivityCreateS
     @Override
     protected void initView() {
         mBinding.titleBar.setTitle(getString(R.string.message_create_single_chat));
-        mBinding.titleBar.setLeftImg(R.mipmap.ic_close);
+        mBinding.titleBar.setLeftImg(R.mipmap.ic_messasge_close);
         mBinding.titleBar.hideRightButton();
     }
 

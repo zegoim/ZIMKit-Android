@@ -116,7 +116,7 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
             @Override
             public void onSuccess(ZIMKitConversationVM.LoadData loadData) {
                 if (loadData.currentLoadIsEmpty) {
-                    mBinding.refreshLayout.finishRefreshWithNoMoreData();
+                    mBinding.refreshLayout.finishLoadMoreWithNoMoreData();
                 } else {
                     mListAdapter.submitList(new ArrayList<>(loadData.allList));
                     if (loadData.state == ZIMKitConversationVM.LoadData.DATA_STATE_CHANGE) {

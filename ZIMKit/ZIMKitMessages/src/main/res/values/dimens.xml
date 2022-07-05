@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="message_time_decoration_bottom_padding">
-        4dp
+        12dp
     </dimen>
     <dimen name="message_time_decoration_top_padding">
-        12dp
+        4dp
     </dimen>
     <dimen name="message_other_side_nick_name_size">
         11sp

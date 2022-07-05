@@ -34,6 +34,8 @@ ext {
     test_extVersion = '1.1.2'
     espresso_coreVersion = '3.3.0'
     constraintlayout = '2.1.3'
-    zimVersion = '2.1.5'
+    zimVersion = '2.2.0'
     rv_thirdVersion='2.0.5'
+    zimkit_version='mvp'
+    zimkit_groupId='im.zego.zimkit'
 }

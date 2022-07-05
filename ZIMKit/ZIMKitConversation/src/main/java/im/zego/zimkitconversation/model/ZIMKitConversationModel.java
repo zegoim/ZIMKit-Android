@@ -11,6 +11,7 @@ import im.zego.zim.entity.ZIMConversation;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.enums.ZIMConversationType;
+import im.zego.zim.enums.ZIMMessageSentStatus;
 import im.zego.zim.enums.ZIMMessageType;
 import im.zego.zimkitcommon.utils.ZIMKitDateUtils;
 import im.zego.zimkitconversation.BR;
@@ -122,12 +123,22 @@ public class ZIMKitConversationModel extends BaseObservable {
         return mConversation.type;
     }
 
+    public ZIMMessageSentStatus getSendState() {
+        if (mConversation.lastMessage == null) {
+            return ZIMMessageSentStatus.UNKNOWN;
+        } else {
+            return mConversation.lastMessage.getSentStatus();
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ZIMKitConversationModel model = (ZIMKitConversationModel) o;
-        return Objects.equals(model.getConversation().conversationID, mConversation.conversationID) && Objects.equals(model.getConversation().orderKey, mConversation.orderKey) && Objects.equals(model.getConversation().type.value(), mConversation.type.value());
+        return Objects.equals(model.getConversation().conversationID, mConversation.conversationID)
+                && Objects.equals(model.getConversation().orderKey, mConversation.orderKey)
+                && Objects.equals(model.getConversation().type.value(), mConversation.type.value());
     }
 
     @Override

@@ -159,27 +159,6 @@ public class ZIMKitDateUtils {
     }
 
     /**
-     * 直接输出【"HH:mm"】或【"MM-dd"】或【""】格式
-     */
-    public static String getConversationDate(long date) {
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(new Date(date));
-        Calendar nowCal1 = Calendar.getInstance();
-        nowCal1.setTime(new Date());
-        if (sdfYMD.format(date).equals(sdfYMD.format(new Date()))) {
-            return sdfHM.format(date);
-        } else if (sdfYMD.format(date).equals(sdfYMD.format(new Date().getTime() - 24 * 60 * 60 * 1000))) {
-            return sApplication.getString(R.string.common_yesterday);
-        } else if (sdfYMD.format(date).equals(sdfYMD.format(new Date().getTime() - 7 * 24 * 60 * 60 * 1000))) {
-            return getWeekOfDate(date);
-        } else if (cal1.get(Calendar.YEAR) != nowCal1.get(Calendar.YEAR)) {
-            return sdfYMD.format(date);
-        } else {
-            return sdfMDAndHM.format(date);
-        }
-    }
-
-    /**
      * 获取消息的时间
      */
     public static String getMessageDate(long date, boolean showDetailTime) {
@@ -189,10 +168,10 @@ public class ZIMKitDateUtils {
         nowCal1.setTime(new Date());
         if (sdfYMD.format(date).equals(sdfYMD.format(new Date()))) {
             return sdfHM.format(date);
-        } else if (sdfYMD.format(date).equals(sdfYMD.format(new Date().getTime() - 24 * 60 * 60 * 1000))) {
-            return sApplication.getString(R.string.common_yesterday) + (showDetailTime ? " " + sdfHM.format(date - 24 * 60 * 60 * 1000) : "");
-        } else if (date - new Date().getTime() < 7 * 24 * 60 * 60 * 1000) {
-            return getWeekOfDate(date) + (showDetailTime ? " " + sdfHM.format(date - 7 * 24 * 60 * 60 * 1000) : "");
+        } else if (nowCal1.get(Calendar.DAY_OF_YEAR) - cal1.get(Calendar.DAY_OF_YEAR) == 1) {
+            return sApplication.getString(R.string.common_yesterday) + (showDetailTime ? " " + sdfHM.format(date) : "");
+        } else if (nowCal1.get(Calendar.DAY_OF_YEAR) - cal1.get(Calendar.DAY_OF_YEAR) < 7) {
+            return getWeekOfDate(date) + (showDetailTime ? " " + sdfHM.format(date) : "");
         } else if (cal1.get(Calendar.YEAR) != nowCal1.get(Calendar.YEAR)) {
             if (showDetailTime) {
                 return sdfYMDHM.format(date);

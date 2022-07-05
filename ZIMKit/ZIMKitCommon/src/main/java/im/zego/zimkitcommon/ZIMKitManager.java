@@ -2,11 +2,14 @@ package im.zego.zimkitcommon;
 
 import android.app.Application;
 
+import java.util.Map;
+
 import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMLoggedInCallback;
 import im.zego.zim.entity.ZIMUserInfo;
 import im.zego.zim.enums.ZIMConnectionEvent;
 import im.zego.zim.enums.ZIMConnectionState;
+import im.zego.zimkitcommon.event.IZIMKitEventCallBack;
 import im.zego.zimkitcommon.event.ZIMKitEventHandler;
 import im.zego.zimkitcommon.utils.ToastUtils;
 import im.zego.zimkitcommon.utils.ZIMKitDateUtils;
@@ -54,17 +57,22 @@ public class ZIMKitManager {
             mZim = ZIM.create(appID, mApplication);
             mZim.setEventHandler(ZIMKitEventHandler.share());
             ZIMKitEventHandler.share().addEventListener(ZIMKitConstant.EventConstant.KEY_CONNECTION_STATE_CHANGED,
-                    this, (key, event) -> {
-                        if (key.equals(ZIMKitConstant.EventConstant.KEY_CONNECTION_STATE_CHANGED)) {
-                            ZIMConnectionEvent connectionEvent = (ZIMConnectionEvent) event.get(ZIMKitConstant.EventConstant.PARAM_EVENT);
-                            ZIMConnectionState connectionState = (ZIMConnectionState) event.get(ZIMKitConstant.EventConstant.PARAM_STATE);
-                            if (connectionState == ZIMConnectionState.DISCONNECTED && connectionEvent == ZIMConnectionEvent.KICKED_OUT) {
-                                ToastUtils.showToast(mApplication, mApplication.getString(R.string.common_user_kick_out));
-                            }
-                        }
-                    });
+                    this, mKitEventCallBack);
         }
     }
+
+    private final IZIMKitEventCallBack mKitEventCallBack = new IZIMKitEventCallBack() {
+        @Override
+        public void onCall(String key, Map<String, Object> event) {
+            if (key.equals(ZIMKitConstant.EventConstant.KEY_CONNECTION_STATE_CHANGED)) {
+                ZIMConnectionEvent connectionEvent = (ZIMConnectionEvent) event.get(ZIMKitConstant.EventConstant.PARAM_EVENT);
+                ZIMConnectionState connectionState = (ZIMConnectionState) event.get(ZIMKitConstant.EventConstant.PARAM_STATE);
+                if (connectionState == ZIMConnectionState.DISCONNECTED && connectionEvent == ZIMConnectionEvent.KICKED_OUT) {
+                    ToastUtils.showToast(mApplication, mApplication.getString(R.string.common_user_kick_out));
+                }
+            }
+        }
+    };
 
     public synchronized void loginUserInfo(ZIMUserInfo userInfo, String token, ZIMLoggedInCallback callback) {
         if (mZim == null) {

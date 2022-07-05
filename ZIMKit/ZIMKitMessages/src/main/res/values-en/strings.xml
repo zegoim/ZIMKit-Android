@@ -5,7 +5,7 @@
     <string name="message_user_not_exit_please_again">The user ID (%s) doesn\'t exist. Please try again.</string>
     <string name="message_cant_send_empty_msg">Blank messages are not allowed</string>
     <string name="message_create_chat">OK</string>
-    <string name="message_input_user_id_error_tips">The userID must be must be between 6–12 characters using letters and numbers.</string>
+    <string name="message_input_user_id_error_tips">The userID must be between 6–12 characters using letters and numbers.</string>
     <string name="message_input_user_id">Enter a user ID</string>
     <string name="message_create_single_chat">New 1-on-1 chat</string>
 </resources>

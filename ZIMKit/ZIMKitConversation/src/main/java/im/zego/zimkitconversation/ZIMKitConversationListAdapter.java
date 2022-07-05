@@ -22,7 +22,8 @@ public class ZIMKitConversationListAdapter extends BaseDifferRvAdapter<ZIMKitCon
         return oldItem.getConversation().unreadMessageCount == newItem.getConversation().unreadMessageCount
                 && oldItem.getConversation().conversationName.equals(newItem.getConversation().conversationName)
                 && (oldItem.getConversation().lastMessage == null ? 0 : oldItem.getConversation().lastMessage.getTimestamp())
-                == (newItem.getConversation().lastMessage == null ? 0 : newItem.getConversation().lastMessage.getTimestamp());
+                == (newItem.getConversation().lastMessage == null ? 0 : newItem.getConversation().lastMessage.getTimestamp())
+                && oldItem.getSendState() == newItem.getSendState();
     }
 
     @Override

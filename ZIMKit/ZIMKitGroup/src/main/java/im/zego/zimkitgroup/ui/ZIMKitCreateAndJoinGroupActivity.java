@@ -41,7 +41,7 @@ public class ZIMKitCreateAndJoinGroupActivity extends BaseActivity<ActivityCreat
                 break;
         }
         mBinding.titleBar.setTitle(title);
-        mBinding.titleBar.setLeftImg(R.mipmap.ic_close);
+        mBinding.titleBar.setLeftImg(R.mipmap.ic_group_close);
         mBinding.titleBar.hideRightButton();
     }
 

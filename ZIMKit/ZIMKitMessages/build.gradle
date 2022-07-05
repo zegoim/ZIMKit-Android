@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -26,9 +27,36 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                // You can then customize attributes of the publication as shown below.
+                groupId = rootProject.ext.zimkit_groupId
+                version = rootProject.ext.zimkit_version
+                artifactId = 'message'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+                groupId = rootProject.ext.zimkit_groupId
+                version = rootProject.ext.zimkit_version
+                artifactId = 'message-debug'
+            }
+        }
+    }
+}
 dependencies {
-    implementation project(':ZIMKitCommon')
+    api project(":ZIMKitCommon")
+    api "com.github.zegolibrary:zim:${rootProject.ext.zimVersion}"
+    implementation "io.github.scwang90:refresh-layout-kernel:${rootProject.ext.rv_thirdVersion}"
+    implementation "io.github.scwang90:refresh-footer-classics:${rootProject.ext.rv_thirdVersion}"
+//    api "io.github.scwang90:refresh-header-classics:${rootProject.ext.rv_thirdVersion}"
+    implementation "io.github.scwang90:refresh-header-classics:${rootProject.ext.rv_thirdVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "com.google.android.material:material:${rootProject.ext.materialVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayout}"

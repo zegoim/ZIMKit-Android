@@ -41,6 +41,7 @@
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
             android:text="@string/conversation_reload"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="@{vm.isLoadFirstFail?view.VISIBLE:view.GONE}"

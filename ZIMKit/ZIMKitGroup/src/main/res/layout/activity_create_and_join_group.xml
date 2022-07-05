@@ -95,6 +95,7 @@
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
             android:text="@string/group_create_chat"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="@id/et_id"

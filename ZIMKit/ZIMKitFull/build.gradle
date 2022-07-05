@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -26,10 +27,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+                // You can then customize attributes of the publication as shown below.
+                groupId = rootProject.ext.zimkit_groupId
+                artifactId = 'full'
+                version = rootProject.ext.zimkit_version
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
 
+                groupId = rootProject.ext.zimkit_groupId
+                artifactId = 'full-debug'
+                version = rootProject.ext.zimkit_version
+            }
+        }
+    }
+}
 dependencies {
-    api project(':ZIMKitCommon')
-    api project(':ZIMKitMessages')
-    api project(':ZIMKitConversation')
-    api project(':ZIMKitGroup')
+    api project(":ZIMKitConversation")
+    api project(":ZIMKitGroup")
+    api project(":ZIMKitMessages")
 }

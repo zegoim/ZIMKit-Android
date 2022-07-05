@@ -115,7 +115,9 @@ public class ZIMKitMessageFragment extends BaseFragment<FragmentMessageBinding, 
                         mBinding.refreshLayout.finishRefreshWithNoMoreData();
                     }
                 }
-                mBinding.rvMessage.postDelayed(() -> mBinding.rvMessage.smoothScrollToPosition(mAdapter.getData().size() - 1), 100);
+                if (loadData.state != ZIMKitMessageVM.LoadData.DATA_STATE_HISTORY_NEXT) {
+                    mBinding.rvMessage.postDelayed(() -> mBinding.rvMessage.smoothScrollToPosition(mAdapter.getData().size() - 1), 100);
+                }
             }
 
             @Override

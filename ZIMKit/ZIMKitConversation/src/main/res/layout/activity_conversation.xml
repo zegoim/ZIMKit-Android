@@ -35,7 +35,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_chat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,8 +47,11 @@
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
             android:text="@string/conversation_start_chat"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
+            app:icon="@mipmap/ic_message_total_count"
+            app:iconTint="@null"
             android:visibility="@{(vm.isListEmpty&amp;&amp;!vm.isLoadFirstFail)?view.VISIBLE:view.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

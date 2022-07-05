@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation 'com.tencent.bugly:crashreport:4.0.4'
-    implementation project(':ZIMKitFull')
+    implementation project(":ZIMKitFull")
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "com.google.android.material:material:${rootProject.ext.materialVersion}"

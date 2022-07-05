@@ -35,28 +35,23 @@ afterEvaluate {
                 // Applies the component for the release build variant.
                 from components.release
                 // You can then customize attributes of the publication as shown below.
-                groupId = 'im.zego.zimkit'
                 artifactId = 'common'
-                version = 'mvp'
+                groupId = rootProject.ext.zimkit_groupId
+                version = rootProject.ext.zimkit_version
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
                 // Applies the component for the debug build variant.
                 from components.debug
-
-                groupId = 'im.zego.zimkit'
+                groupId = rootProject.ext.zimkit_groupId
+                version = rootProject.ext.zimkit_version
                 artifactId = 'common-debug'
-                version = 'mvp'
             }
         }
     }
 }
 dependencies {
-    api "io.github.scwang90:refresh-layout-kernel:${rootProject.ext.rv_thirdVersion}"
-    api "io.github.scwang90:refresh-footer-classics:${rootProject.ext.rv_thirdVersion}"
-//    api "io.github.scwang90:refresh-header-classics:${rootProject.ext.rv_thirdVersion}"
-    api 'io.github.scwang90:refresh-header-classics:2.0.5'
-    api "com.github.zegolibrary:zim:${rootProject.ext.zimVersion}"
+    implementation "com.github.zegolibrary:zim:${rootProject.ext.zimVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "com.google.android.material:material:${rootProject.ext.materialVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayout}"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="conversation_start_chat">+ 开始聊天</string>
+    <string name="conversation_start_chat">开始聊天</string>
     <string name="conversation_empty">暂无消息\n快去发起聊天吧</string>
     <string name="conversation_start_single_chat">发起单聊</string>
     <string name="conversation_start_group_chat">发起群聊</string>

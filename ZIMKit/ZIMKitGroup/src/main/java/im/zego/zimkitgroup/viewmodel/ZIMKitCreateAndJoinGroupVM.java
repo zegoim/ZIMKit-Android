@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMErrorUserInfo;
 import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.enums.ZIMErrorCode;
@@ -27,7 +26,8 @@ import android.app.Application;
 public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
 
     private String mType = "";
-    public ObservableField<Boolean> mButtonState = new ObservableField<>(false);
+    public ObservableField<Boolean> isCanToChat = new ObservableField<>(false);
+    public ObservableField<Boolean> isShowErrorTips = new ObservableField<>(false);
     public ObservableField<String> mId = new ObservableField<>();
     public ObservableField<String> mIdInputHint = new ObservableField<>();
     public ObservableField<Boolean> mShowSecondEdittext = new ObservableField<>(false);
@@ -81,10 +81,9 @@ public class ZIMKitCreateAndJoinGroupVM extends AndroidViewModel {
                             break;
                         }
                     }
-                } else {
-                    isLengthCorrect = s.length() >= 6 && s.length() <= 12;
+                    isShowErrorTips.set(id.isEmpty() || !isLengthCorrect);
                 }
-                mButtonState.set(!id.isEmpty() && isLengthCorrect);
+                isCanToChat.set(!id.isEmpty() && isLengthCorrect);
             }
         };
     }

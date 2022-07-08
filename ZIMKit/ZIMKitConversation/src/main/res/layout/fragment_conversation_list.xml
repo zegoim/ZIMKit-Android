@@ -22,12 +22,14 @@
         <TextView
             android:id="@+id/tv_message_empty"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/conversation_empty"
             android:textColor="@color/color_a4a4a4"
             android:textSize="14sp"
-            android:visibility="@{vm.isListEmpty?view.VISIBLE:view.GONE}" />
+            android:visibility="@{vm.isListEmpty?view.VISIBLE:view.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/view_start_chat"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_reload"
@@ -36,7 +38,7 @@
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp"
             android:layout_marginBottom="105dp"
-            android:background="@drawable/shape_radius_12_bg_ff3478fc"
+            android:background="@drawable/shape_radius_8_bg_ff3478fc"
             android:gravity="center"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
@@ -47,7 +49,8 @@
             android:visibility="@{vm.isLoadFirstFail?view.VISIBLE:view.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            tools:visibility="gone" />
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_layout"
@@ -69,6 +72,36 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
         <View
+            android:id="@+id/view_start_chat"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginBottom="105dp"
+            android:background="@drawable/shape_radius_8_bg_ff3478fc"
+            android:visibility="@{(vm.isListEmpty&amp;&amp;!vm.isLoadFirstFail)?view.VISIBLE:view.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_start_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/ic_start_chat"
+            android:drawablePadding="11dp"
+            android:gravity="center"
+            android:text="@string/conversation_start_chat"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="@{(vm.isListEmpty&amp;&amp;!vm.isLoadFirstFail)?view.VISIBLE:view.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/view_start_chat"
+            app:layout_constraintEnd_toEndOf="@id/view_start_chat"
+            app:layout_constraintStart_toStartOf="@id/view_start_chat"
+            app:layout_constraintTop_toTopOf="@id/view_start_chat" />
+
+        <View
             android:id="@+id/view_bottom"
             android:layout_width="match_parent"
             android:layout_height="61dp"
@@ -80,30 +113,30 @@
             android:id="@+id/img_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:src="@mipmap/ic_message_total_count"
             app:layout_constraintBottom_toTopOf="@id/tv_message_unread"
             app:layout_constraintLeft_toLeftOf="@id/view_bottom"
-            app:layout_constraintRight_toRightOf="@id/view_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_bottom" />
+            app:layout_constraintRight_toRightOf="@id/view_bottom" />
 
         <TextView
             android:id="@+id/tv_message_unread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/conversation_message_total_count"
             android:textColor="@color/color_666666"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/view_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/img_message"
-            app:layout_constraintRight_toRightOf="@id/img_message"
-            app:layout_constraintTop_toBottomOf="@id/img_message" />
+            app:layout_constraintRight_toRightOf="@id/img_message" />
 
         <im.zego.zimkitcommon.components.widget.UnreadCountView
             android:id="@+id/tv_un_read_count"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="-4dp"
-            android:layout_marginRight="-6dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginRight="-8dp"
             app:layout_constraintRight_toRightOf="@id/img_message"
             app:layout_constraintTop_toTopOf="@id/img_message"
             app:unReadCount="@{vm.totalUnReadCount}" />

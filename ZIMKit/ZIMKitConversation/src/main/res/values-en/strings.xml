@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="conversation_start_chat">+ New Chat</string>
+    <string name="conversation_start_chat">New Chat</string>
     <string name="conversation_empty">No chats. Start chatting now.</string>
     <string name="conversation_start_single_chat">One-on-one chat</string>
     <string name="conversation_start_group_chat">Group chat</string>

@@ -1,16 +1,15 @@
 package im.zego.zimkitconversation.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
 import im.zego.zim.entity.ZIMError;
 import im.zego.zim.enums.ZIMConversationType;
-import im.zego.zim.enums.ZIMErrorCode;
 import im.zego.zimkitcommon.ZIMKitConstant;
 import im.zego.zimkitcommon.ZIMKitRouter;
 import im.zego.zimkitcommon.base.BaseFragment;
@@ -20,6 +19,7 @@ import im.zego.zimkitconversation.ZIMKitConversationListAdapter;
 import im.zego.zimkitconversation.R;
 import im.zego.zimkitconversation.databinding.FragmentConversationListBinding;
 import im.zego.zimkitconversation.databinding.LayoutDeleteConversationBinding;
+import im.zego.zimkitconversation.databinding.LayoutSeletectChatTypeBinding;
 import im.zego.zimkitconversation.model.ZIMKitConversationModel;
 import im.zego.zimkitconversation.viewmodel.ZIMKitConversationVM;
 import im.zego.zimkitconversation.widget.CustomBottomSheet;
@@ -28,6 +28,7 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
     private ZIMKitConversationListAdapter mListAdapter;
     private CustomBottomSheet<LayoutDeleteConversationBinding> mDeleteConversationBottomSheet;
     private ZIMKitConversationModel mCurrentSelectModel;
+    private CustomBottomSheet<LayoutSeletectChatTypeBinding> mSelectChatBottomSheet;
 
     @Override
     protected int getLayoutId() {
@@ -50,11 +51,11 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
                 mDeleteConversationBottomSheet = new CustomBottomSheet<>(R.layout.layout_delete_conversation, this::setBottomSheetItemListener);
             }
             mCurrentSelectModel = model;
-            mDeleteConversationBottomSheet.show(ZIMKitConversationFragment.this.getParentFragmentManager(), "delete_conversation");
+            mDeleteConversationBottomSheet.show(getParentFragmentManager(), "delete_conversation");
         });
         mListAdapter.setItemClickListener(model -> {
             mViewModel.clearConversationUnreadMessageCount(model.getConversationID(), model.getType());
-            toChat(model.getType(), model.getName(), model.getConversationID());
+            toMessage(model.getType(), model.getName(), model.getConversationID());
         });
 
         mBinding.rvList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -65,6 +66,42 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
             mViewModel.loadNextPage();
         });
         mBinding.btnReload.setOnClickListener(v -> mViewModel.loadConversation());
+        mBinding.viewStartChat.setOnClickListener(v -> showSelectChatBottomSheet());
+        mBinding.tvStartChat.setOnClickListener(v -> showSelectChatBottomSheet());
+    }
+
+    public void showSelectChatBottomSheet() {
+        if (mSelectChatBottomSheet != null && mSelectChatBottomSheet.getDialog() != null && mSelectChatBottomSheet.getDialog().isShowing()) {
+            mSelectChatBottomSheet.dismiss();
+        }
+        if (mSelectChatBottomSheet == null) {
+            mSelectChatBottomSheet = new CustomBottomSheet<>(R.layout.layout_seletect_chat_type, this::setSelectBottomSheetItemListener);
+        }
+        mSelectChatBottomSheet.show(getParentFragmentManager(), "chatType");
+    }
+
+    private void setSelectBottomSheetItemListener(LayoutSeletectChatTypeBinding binding) {
+        binding.tvCreateGroupChat.setOnClickListener(v -> {
+            toGroupChat(ZIMKitConstant.GroupPageConstant.TYPE_CREATE_GROUP_MESSAGE);
+        });
+        binding.tvCreateSingleChat.setOnClickListener(v -> {
+            toSingleChat();
+        });
+        binding.tvJoinGroupChat.setOnClickListener(v -> {
+            toGroupChat(ZIMKitConstant.GroupPageConstant.TYPE_JOIN_GROUP_MESSAGE);
+        });
+    }
+
+    private void toSingleChat() {
+        dismissBottomSheet();
+        ZIMKitRouter.to(getContext(), ZIMKitConstant.RouterConstant.ROUTER_CREATE_SINGLE_CHAT, null);
+    }
+
+    private void toGroupChat(String type) {
+        dismissBottomSheet();
+        Bundle bundle = new Bundle();
+        bundle.putString(ZIMKitConstant.GroupPageConstant.KEY_TYPE, type);
+        ZIMKitRouter.to(getContext(), ZIMKitConstant.RouterConstant.ROUTER_CREATE_AND_JOIN_GROUP, bundle);
     }
 
     private void setBottomSheetItemListener(LayoutDeleteConversationBinding binding) {
@@ -83,7 +120,7 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
         });
     }
 
-    private void toChat(ZIMConversationType type, String name, String conversationId) {
+    private void toMessage(ZIMConversationType type, String name, String conversationId) {
         Bundle data = new Bundle();
         if (type == ZIMConversationType.GROUP) {
             data.putString(ZIMKitConstant.MessagePageConstant.KEY_TYPE, ZIMKitConstant.MessagePageConstant.TYPE_GROUP_MESSAGE);
@@ -107,6 +144,10 @@ public class ZIMKitConversationFragment extends BaseFragment<FragmentConversatio
         if (mDeleteConversationBottomSheet != null) {
             mDeleteConversationBottomSheet.dismiss();
             mDeleteConversationBottomSheet = null;
+        }
+        if (mSelectChatBottomSheet != null) {
+            mSelectChatBottomSheet.dismiss();
+            mSelectChatBottomSheet = null;
         }
     }
 

@@ -1,51 +1,52 @@
 # ZIMKit-Android
 
-## 概述
+## Overview
 
-本文介绍如何快速跑通示例源码，体验基础的 ZIMKit 集成方案。
+The following describe how to run the sample code of the In-app Chat UIKit.
 
-## 准备环境
+## Prepare the environment
 
-在运行示例源码前，请确保开发环境满足以下要求：
+Before you begin, make sure your environment meets the following:
+- Android Studio 3.6 or later.
+- Android SDK Packages: Android SDK 28, Android SDK Platform - Tools 30.x.x or later
+- An Android device or Simulator that is running on Android 5.0 or later. We recommend you use a real device. And please enable the "USB Debugging".
+- Android device and your computer are connected to the internet.
 
-- Android Studio 3.6 或以上版本。
-- Android SDK 28、Android SDK Platform-Tools 30。
-- Android 5.0 或以上版本的 Android 设备或模拟器（推荐使用真机），如果是真机，请开启“允许调试”选项。
-- Android 设备、开发电脑已经连接到 Internet。
+## Prerequisites
 
-## 前提条件
+- Go to [ZEGOCLOUD Admin Console\|_blank](https://console.zegocloud.com/) and do the following:
+    1.  Create a project, and get the `AppID` and `ServerSecret` of your project.
+    2.  Subscribe the **In-app Chat** service.
 
-已在 [ZEGO 控制台](https://console.zego.im/) 创建项目，并申请有效的 AppID 和 ServerSecret，详情请参考 [控制台 - 项目管理](http://doc.oa.zego.im/zh#12107) 中的“项目信息”。
-
-## 示例源码目录结构
+## Sample code directory structure
 
 ```
-├── README.md                // 说明文件
+├── README.md                // README file
 ├── ZIMKit
-│   ├── ZIMKitCommon         // 公共库
-│   ├── ZIMKitConversation   // 会话组件
-│   ├── ZIMKitFull           // 依赖了全部组件
-│   ├── ZIMKitGroup          // 群组组件
-│   ├── ZIMKitMessages       // 消息组件
-│   ├── app                  // demo模块
-│   ├── build.gradle         // 全局配置
+│   ├── ZIMKitCommon         // Common libraries
+│   ├── ZIMKitConversation   // Session component
+│   ├── ZIMKitFull           // Dependencies for all components
+│   ├── ZIMKitGroup          // Group component
+│   ├── ZIMKitMessages       // Message component
+│   ├── app                  // demo module
+│   ├── build.gradle         // Global configuration
 │   ├── gradle
 │   ├── gradle.properties
 │   ├── gradlew
 │   ├── gradlew.bat
 │   ├── local.properties
-│   └── settings.gradle      // 模块配置
-└── key.jks                  // 编译release 所用的签名
+│   └── settings.gradle      // Module configuration
+└── key.jks                  // The signature used to compile release
 ```
 
-## 运行示例源码
+## Run the sample code
 
-1. 替换 AppConfig 中的 APP_ID 和 ServerSecret 字段。
-2. 单击 “Sync” 按钮，同步 Gradle 和所需的相关依赖。
-3. 电脑连接好 Android 手机，单击“运行”按钮，即可运行体验。
+1. Replace the `AppID` and `ServerSecret` field in the AppConfig with the AppID and ServerSecret you get.
+2. Click the "Sync" button to synchronize the Gradle and all required dependencies.
+3. Connect your computer with the Android device, click "Run" button to run the sample code.
 
-## 体验 ZIMKit 功能
+## Experience the In-app Chat UIKit
 
-1. 在登录页面输入 UserID，单击“登录”，登录成功后，即可进入会话列表页面。
-2. 首次进入需要先创建会话，可创建单聊会话或者群聊会话或者加入其他群聊。
-3. 会话创建成功后，进入消息页面，即可发送消息。
+1. On the login page, enter the userID, click "Log in". You will enter the session list page after logged in successfully.
+2. You need to create a chat (1-on-1 chat, group chat, or join a chat) first if you are logged in for the first time.
+3. After creating a chat, you can send messages on the message page.
